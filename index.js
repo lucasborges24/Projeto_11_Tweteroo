@@ -12,6 +12,7 @@ app.post("/sign-up", (req, res) => {
     const data = req.body
     users = data
     res.send("OK")
+    
 })
 
 app.post("/tweets", (req, res) => {
