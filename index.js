@@ -26,8 +26,23 @@ app.post("/tweets", (req, res) => {
 })
 
 app.get("/tweets", (req, res) => {
-    res.send(tweets)
+    const tweetsFiltered = filter(10);
+    res.send(tweetsFiltered)
 })
+
+function filter(filterNumber) {
+    const tweetsFiltered = []
+    if (tweets.length < filterNumber) {
+        for (let i = tweets.length - 1; i >= 0; i--) {
+            tweetsFiltered.push(tweets[i])
+        }
+    } else {
+        for (let i = tweets.length - 1; i >= tweets.length - filterNumber; i--) {
+            tweetsFiltered.push(tweets[i])
+        }
+    }
+    return tweetsFiltered;
+}
 
 app.listen(5000);
 
