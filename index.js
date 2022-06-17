@@ -20,12 +20,12 @@ app.post("/sign-up", (req, res) => {
 
 app.post("/tweets", (req, res) => {
     const data = req.body
-    
+    const user = req.headers.user
     if (data.tweet.length === 0) {
         res.status(400).send("Todos os campos são obrigatórios!")
     } else {
         tweets.push({
-            username: data.username,
+            username: user,
             avatar: users.avatar,
             tweet: data.tweet,
         })
