@@ -21,6 +21,7 @@ app.post("/sign-up", (req, res) => {
 app.post("/tweets", (req, res) => {
     const data = req.body
     const user = req.headers.user
+    
     if (data.tweet.length === 0) {
         res.status(400).send("Todos os campos são obrigatórios!")
     } else {
@@ -35,21 +36,21 @@ app.post("/tweets", (req, res) => {
 })
 
 app.get("/tweets", (req, res) => {
-    const tweetsFiltered = filter(10);
-    res.send(tweetsFiltered)
+    const page = parseInt(req.query.page);
+    if (page === undefined || page < 1) {
+        res.status(400).send("Informe uma página válida!")
+    } else {
+        const tweetsFiltered = filter(10, page);
+        res.send(tweetsFiltered)
+    }
 })
 
-function filter(filterNumber) {
-    const tweetsFiltered = []
-    if (tweets.length < filterNumber) {
-        for (let i = tweets.length - 1; i >= 0; i--) {
-            tweetsFiltered.push(tweets[i])
-        }
-    } else {
-        for (let i = tweets.length - 1; i >= tweets.length - filterNumber; i--) {
-            tweetsFiltered.push(tweets[i])
-        }
-    }
+function filter(filterNumber, n) {
+    let tweetsFiltered = [];
+    let reverseTweets = [...tweets].reverse();
+
+    tweetsFiltered = [...reverseTweets].slice((filterNumber * (n-1)), (filterNumber * n))
+
     return tweetsFiltered;
 }
 
