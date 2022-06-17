@@ -14,7 +14,7 @@ app.post("/sign-up", (req, res) => {
         res.status(400).send("Todos os campos são obrigatórios!")
     } else {
         users = data
-        res.send("OK")
+        res.status(201).send("OK")
     }
 })
 
@@ -29,7 +29,7 @@ app.post("/tweets", (req, res) => {
             avatar: users.avatar,
             tweet: data.tweet,
         })
-        res.send("OK")
+        res.status(201).send("OK")
     }
     
 })
