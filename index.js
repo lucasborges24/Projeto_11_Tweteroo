@@ -40,7 +40,7 @@ app.get("/tweets", (req, res) => {
     if (page === undefined || page < 1) {
         res.status(400).send("Informe uma página válida!")
     } else {
-        const tweetsFiltered = filter(2, page);
+        const tweetsFiltered = filter(10, page);
         res.send(tweetsFiltered)
     }
 })
