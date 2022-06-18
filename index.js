@@ -14,7 +14,6 @@ app.post("/sign-up", (req, res) => {
         res.status(400).send("Todos os campos são obrigatórios!")
     } else {
         users.push(data)
-        console.log(users)
         res.status(201).send("OK")
     }
 })
@@ -41,14 +40,18 @@ app.get("/tweets", (req, res) => {
     if (page === undefined || page < 1) {
         res.status(400).send("Informe uma página válida!")
     } else {
-        const tweetsFiltered = filter(10, page);
+        const tweetsFiltered = filter(2, page);
         res.send(tweetsFiltered)
     }
 })
 
+app.get("/tweets/:username", (req, res) => {
+    const username = req.params.username
+    const userTweets = tweets.filter(i => i.username === username)
+    res.send(userTweets)
+})
 
 function filter(filterNumber, page) {
-    if (tweets.length < filterNumber) page = 1;
     let tweetsFiltered = [];
     let reverseTweets = [...tweets].reverse();
     tweetsFiltered = [...reverseTweets].slice((filterNumber * (page-1)), (filterNumber * page))
