@@ -13,7 +13,8 @@ app.post("/sign-up", (req, res) => {
     if (data.username.length === 0 || data.avatar.length === 0 ) {
         res.status(400).send("Todos os campos são obrigatórios!")
     } else {
-        users = data
+        users.push(data)
+        console.log(users)
         res.status(201).send("OK")
     }
 })
@@ -21,13 +22,13 @@ app.post("/sign-up", (req, res) => {
 app.post("/tweets", (req, res) => {
     const data = req.body
     const user = req.headers.user
-    
-    if (data.tweet.length === 0) {
+
+    if (data.tweet.length === 0 || user.length === 0) {
         res.status(400).send("Todos os campos são obrigatórios!")
     } else {
         tweets.push({
             username: user,
-            avatar: users.avatar,
+            avatar: users.find(i => i.username === user).avatar,
             tweet: data.tweet,
         })
         res.status(201).send("OK")
@@ -45,11 +46,12 @@ app.get("/tweets", (req, res) => {
     }
 })
 
-function filter(filterNumber, n) {
+
+function filter(filterNumber, page) {
+    if (tweets.length < filterNumber) page = 1;
     let tweetsFiltered = [];
     let reverseTweets = [...tweets].reverse();
-
-    tweetsFiltered = [...reverseTweets].slice((filterNumber * (n-1)), (filterNumber * n))
+    tweetsFiltered = [...reverseTweets].slice((filterNumber * (page-1)), (filterNumber * page))
 
     return tweetsFiltered;
 }
